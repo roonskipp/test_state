@@ -10,24 +10,43 @@ import SwiftUI
 struct ContentView: View {
     @ObservedObject var stateManager = sharedAppStateManager
     @ObservedObject var iceCreamManager = sharedIceCreamManager
+    @State var darkMode: Bool = false
+    @EnvironmentObject var secretMessage: EnvironmentObjectSecret
+    
     
     
     var body: some View {
-        TabView {
-            Tab("Home", systemImage: "house.fill") {
-                Text(stateManager.testNumber)
-                Text(iceCreamManager.iceCream)
-            }
-
-            Tab("Number", systemImage: "dice.fill") {
-                pickerView()
+        NavigationStack{
+            VStack{
+                TabView {
+                    Tab("Home", systemImage: "house.fill") {
+                        VStack{
+                            Spacer()
+                            HStack {
+                                Spacer()
+                                Text(stateManager.testNumber).colorScheme(darkMode ? .dark : .light)
+                                Text(iceCreamManager.iceCream).colorScheme(darkMode ? .dark : .light)
+                                Spacer()
+                            }
+                            Spacer()
+                        }
+                        
+                        .background(Color.gray.opacity(darkMode ? 1 : 0))
+                    }
+                    
+                    Tab("Number", systemImage: "dice.fill") {
+                        pickerView()
+                    }
+                    Tab("Settings", systemImage: "building.fill"){
+                        BindingView(someStateBinding: $darkMode)
+                            .environmentObject(secretMessage)
+                    }
+                }
             }
         }
-
-        .padding()
     }
 }
 
 #Preview {
-    ContentView()
+    ContentView().environmentObject(EnvironmentObjectSecret())
 }

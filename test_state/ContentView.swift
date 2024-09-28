@@ -8,13 +8,22 @@
 import SwiftUI
 
 struct ContentView: View {
+    @ObservedObject var stateManager = sharedAppStateManager
+    @ObservedObject var iceCreamManager = sharedIceCreamManager
+    
+    
     var body: some View {
-        VStack {
-            Image(systemName: "globe")
-                .imageScale(.large)
-                .foregroundStyle(.tint)
-            Text("Hello, world!")
+        TabView {
+            Tab("Home", systemImage: "house.fill") {
+                Text(stateManager.testNumber)
+                Text(iceCreamManager.iceCream)
+            }
+
+            Tab("Number", systemImage: "dice.fill") {
+                pickerView()
+            }
         }
+
         .padding()
     }
 }

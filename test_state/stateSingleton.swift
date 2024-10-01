@@ -11,7 +11,14 @@ import SwiftUI
 let sharedAppStateManager = AppStateManager()
 
 class AppStateManager: ObservableObject {
+    
+    @Published var text: String = "Hello, World!"
+    
+    
     @AppStorage("testNumber") var testNumber = "1" {
+        willSet {
+            print("testNumber: \(testNumber)")
+        }
         didSet {
             print("testNumber: \(testNumber)")
             sharedIceCreamManager.changeIceCream(iceCreamNumber: Int(testNumber) ?? -1)
